@@ -10,6 +10,7 @@ Uso:
 """
 
 import argparse
+import platform
 import json
 import os
 import time
@@ -37,6 +38,7 @@ PLOT_DIR = os.path.join(os.path.dirname(__file__), "..", "results", "plots")
 METRIC_DIR = os.path.join(os.path.dirname(__file__), "..", "results", "metrics")
 
 os.makedirs(DATA_DIR, exist_ok=True)
+NUM_WORKERS = 0 if platform.system() == "Windows" else 2
 os.makedirs(CKPT_DIR, exist_ok=True)
 os.makedirs(PLOT_DIR, exist_ok=True)
 os.makedirs(METRIC_DIR, exist_ok=True)
@@ -89,11 +91,11 @@ def get_dataloaders(dataset_name: str, batch_size: int = 128):
                                      generator=torch.Generator().manual_seed(42))
 
     train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True,
-                               num_workers=2, pin_memory=True)
+                               num_workers=NUM_WORKERS, pin_memory=True)
     val_loader = DataLoader(val_ds, batch_size=batch_size, shuffle=False,
-                             num_workers=2, pin_memory=True)
+                             num_workers=NUM_WORKERS, pin_memory=True)
     test_loader = DataLoader(test_ds, batch_size=batch_size, shuffle=False,
-                              num_workers=2, pin_memory=True)
+                              num_workers=NUM_WORKERS, pin_memory=True)
 
     return train_loader, val_loader, test_loader, in_channels, input_size
 

@@ -16,18 +16,23 @@ import argparse
 import os
 import sys
 
+# Garante que src/ está no path (funciona em Colab e local)
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+SRC_DIR = os.path.join(PROJECT_ROOT, "src")
+if SRC_DIR not in sys.path:
+    sys.path.insert(0, SRC_DIR)
+
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from torchvision import datasets, transforms
 
-sys.path.insert(0, os.path.dirname(__file__))
 from model import CustomCNN
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
-CKPT_DIR = os.path.join(os.path.dirname(__file__), "..", "checkpoints")
-PLOT_DIR = os.path.join(os.path.dirname(__file__), "..", "results", "plots")
+DATA_DIR   = os.path.join(PROJECT_ROOT, "data")
+CKPT_DIR   = os.path.join(PROJECT_ROOT, "checkpoints")
+PLOT_DIR   = os.path.join(PROJECT_ROOT, "results", "plots")
 os.makedirs(PLOT_DIR, exist_ok=True)
 
 
